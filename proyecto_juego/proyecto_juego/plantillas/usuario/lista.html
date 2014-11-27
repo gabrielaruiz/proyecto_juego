@@ -1,0 +1,22 @@
+{% extends "base2.html" %}
+
+{% block title %}
+	    <title>lista</title>
+{% endblock %}
+
+{%block container%}
+	
+	
+	
+	<article id="rigth">
+				     <div class="contenedor">
+		              <h2>Lista de usuario</h2>
+		            
+			                {% for i in usuarios %}
+			                    <h3><li><a href="/perfil"><img src="{{ user.perfil.avatar.url_50x50}}" alt="avatar">{{ i.username }}</a> </li></h3>
+			                {% endfor %}
+		           
+		             </div>
+	</article>
+	
+{% endblock %}

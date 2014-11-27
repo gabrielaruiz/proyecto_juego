@@ -13,6 +13,11 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 RUTA_PROYECTO=os.path.dirname(os.path.realpath(__file__))
+
+
+
+#MEDIA_ROOT=os.path.join(RUTA_PROYECTO,'carga')
+MEDIA_URL='/media/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -37,6 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'proyecto_juego.apps.inicio',
+    'captcha',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,7 +63,14 @@ WSGI_APPLICATION = 'proyecto_juego.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -70,7 +84,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-bo'
 
 TIME_ZONE = 'UTC'
 
@@ -93,3 +107,9 @@ TEMPLATE_DIRS=(os.path.join(RUTA_PROYECTO,"plantillas"),)
 STATICFILES_DIRS=(os.path.join(RUTA_PROYECTO,"static"),)
 #configuracion del directorio para los archivos multimedia
 MEDIA_ROOT=os.path.join(RUTA_PROYECTO,"media")
+
+#Captcha
+RECAPTCHA_PUBLIC_KEY = '6LffQf4SAAAAAMAveMCj81gJ0i6FF9coJPXvVNbO'
+RECAPTCHA_PRIVATE_KEY = '6LffQf4SAAAAAMxcqmHhUS8vpD5GboBMl1Jp70F2'
+
+
