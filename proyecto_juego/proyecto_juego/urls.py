@@ -11,6 +11,7 @@ urlpatterns = patterns('',
   
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('proyecto_juego.apps.inicio.urls')),
+    url(r'^error/', include("proyecto_juego.apps.error.urls")),
     url(r'^media/(?P<path>.*)$','django.views.static.serve',
     {'document_root':settings.MEDIA_ROOT,}
     ),

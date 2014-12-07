@@ -13,6 +13,7 @@ from django.contrib.sessions.backends.db import SessionStore
 
 
 #pagina de inicio del sistema
+
 def home(request):	
 	
 	return render_to_response("base.html",RequestContext(request))
@@ -39,7 +40,6 @@ def registrou(request):
 
 	return render_to_response('usuario/reg.html',{'formulario':formulario},RequestContext(request))
 	
-
 def inicio_view(request):
 	usuarios=User.objects.all()
 	return render_to_response("usuario/lista.html",{'usuarios':usuarios},RequestContext(request))
@@ -85,7 +85,7 @@ def ingresar(request):
 					p.save()
 					request.session["idkey"]=p.session_key
 					request.session["name"]=Nick
-					del request.session['cont']
+					#del request.session['cont']
 					return HttpResponseRedirect('/perfil')
 				else: 
 					login(request,acceso)
@@ -106,7 +106,6 @@ def ingresar(request):
 		request.session['cont']=0
 		formulario=AuthenticationForm()
 	return render_to_response('usuario/ingresar.html',{'formulario':formulario},context_instance=RequestContext(request))
-
 
 
 
@@ -136,19 +135,16 @@ def modificar_view(request):
 	perfil=Perfil.objects.get(user=u)
 	if request.method=="POST":
 		formulario=fperfil(request.POST,request.FILES,instance=perfil)
-		formulario2=feditar_perfil(request.POST)
-		if formulario.is_valid() and formulario2.is_valid():
-			email=request.POST['email']
-			#contrasena=request.POST['password']
+		
+		if formulario.is_valid(): 
 			formulario.save()
-			u.email=email
-			#u.set_password(contrasena)
+			
 			u.save()
 		return HttpResponseRedirect("/perfil/")
 	else:
 		formulario=fperfil(instance=perfil)
-		formulario2=feditar_perfil(initial={'email':u.email})
-	return render_to_response("usuario/editar_perfil.html",{'formulario':formulario,'formulario2':formulario2},context_instance=RequestContext(request))
+		
+	return render_to_response("usuario/editar_perfil.html",{'formulario':formulario},context_instance=RequestContext(request))
 
 
 def modificar_password(request):
@@ -172,6 +168,9 @@ def ver_perfil(request,id):
 	usuario=User.objects.get(id=int(id))
 	return render_to_response("usuario/lista.html",{'usuario':usuario,'estado':True},RequestContext(request))
 def registro_tema(request):
+	usuario=request.user
+	if(not usuario.has_perm("proyecto_juego.add_tema")):
+		return HttpResponseRedirect("/error/permit");
 	temas=Tema.objects.all()
 	titulo="Registro de tema"
 	if request.method=="POST":
@@ -188,6 +187,10 @@ def registro_tema(request):
 
 
 def add_pregunta(request,id):
+	usuario=request.user
+	if(not usuario.has_perm("inicio.add_pregunta")):
+		return HttpResponseRedirect("/error/permit");
+
 	tema=Tema.objects.get(id=int(id))
 	titulo="Registrar pregunta para el tema de "+tema.nombre
 	titulo2="Registre las respuestas"
@@ -212,6 +215,10 @@ def add_pregunta(request,id):
 	return render_to_response("usuario/registro_preguntas.html",datos,context_instance=RequestContext(request))
 
 def ver_preguntas(request,id):
+	usuario=request.user
+	if(not usuario.has_perm("inicio.change_pregunta")):
+		return HttpResponseRedirect("/error/permit");
+
 	tema=Tema.objects.get(id=int(id))
 	preguntas=Pregunta.objects.filter(tema=tema)
 	datos={'tema':tema,'preguntas':preguntas}
@@ -248,7 +255,3 @@ def chat(request):
 	idsession=request.session["idkey"]
 	return HttpResponseRedirect("http://localhost:3000/django/"+idsession)
 
-
-def agregar(request):	
-	#return render_to_response ('base.html',RequestContext(request))
-	return render_to_response("usuario/sesion.html",RequestContext(request))

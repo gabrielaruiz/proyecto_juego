@@ -50,6 +50,7 @@
 					          		<li class="#active"><a href="/">Inicio</a></li> 
 					          		{% if user.is_authenticated %}
 									   <li><a href="/logout/">LogOut {{user}}</a></li>
+									   <li class="#active"><a href="/lista/">Lista</a></li>
 									   <li class="#active"><a href="/chat/">Chat</a></li>
 									{% else %}
 										<li><a href="/login/"></a></li>

@@ -38,16 +38,16 @@ class feditar_pass(forms.Form):
 class fusuario(UserCreationForm):
 	username=forms.CharField(max_length=40,required=True,help_text=False,label="Nick")
 	password2=forms.CharField(help_text=False,label="Contraseña de confirmación", widget=forms.PasswordInput)
-	first_name=forms.CharField(max_length=50,required=True,label="Nombre")
-	last_name=forms.CharField(max_length=50,required=True,label="Apellido")
+	#first_name=forms.CharField(max_length=50,required=True,label="Nombre")
+	#last_name=forms.CharField(max_length=50,required=True,label="Apellido")
 	email=forms.EmailField(max_length=100,required=True,label="Email")
 	class Meta:
 		model=User
-		fields=("username","password1","password2","first_name","last_name","email")
+		fields=("username","password1","password2","email")
 	def save(self, commit=True):
 		user=super(fusuario,self).save(commit=False)
-		user.first_name=self.cleaned_data.get("first_name")
-		user.last_name=self.cleaned_data.get("last_name")
+		#ser.first_name=self.cleaned_data.get("first_name")
+		#ser.last_name=self.cleaned_data.get("last_name")
 		user.email=self.cleaned_data.get("email")
 		if commit:
 			user.save()

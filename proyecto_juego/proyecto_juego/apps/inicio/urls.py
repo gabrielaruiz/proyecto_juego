@@ -33,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^pregunta/edit/(\d+)/$',edit_pregunta, name='edit_pregunta'),
     url(r'^pregunta/eliminar/(\d+)/$',eliminar_pregunta, name='eliminar_pregunta'),
     #url(r'^registro/pregunta/$',registro_pregunta, name='Pregunta'),
-    url(r'^agregar/',agregar, name='agregar_pregunta'),
+    #url(r'^agregar/',agregar, name='agregar_pregunta'),
 )
 
 #http://localhost:8000/
