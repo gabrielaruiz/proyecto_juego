@@ -45,10 +45,12 @@
 			 			 </button> 
 			 			  <a class="brand" href="/">TriviaOnline.bo</a> 
 					 	    <div class="nav-collapse collapse"> 
-					 	    
-					          	<ul class="nav"> 
+					 	    	
+					          	<ul class="nav">
+					          		<li class="#active"><a href="/">Inicio</a></li> 
 					          		{% if user.is_authenticated %}
-										<li><a href="/logout/">Salir</a></li>
+									   <li><a href="/logout/">LogOut {{user}}</a></li>
+									   <li class="#active"><a href="/chat/">Chat</a></li>
 									{% else %}
 										<li><a href="/login/"></a></li>
 									{% endif %}

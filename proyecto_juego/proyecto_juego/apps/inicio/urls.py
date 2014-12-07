@@ -21,8 +21,9 @@ urlpatterns = patterns('',
     url(r'^active/$',user_active_view),
     url(r'^lista/$',inicio_view),
     url(r'^modificar/$',modificar_view),
-    url(r'^npass/$',modificar_pass),
-    
+    url(r'^nuevopassword/$',modificar_password),
+    url(r'^perfil/view/(\d+)/$',ver_perfil, name='ver_perfil_user'),
+    url(r'^chat/$',chat, name='coneccion'),
 
 
 

@@ -8,26 +8,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout,authenticate
 import pdb
-from django.contrib.auth.decorators import login_required  
+from django.contrib.auth.decorators import login_required
+from django.contrib.sessions.backends.db import SessionStore
 
-# Create your views here.
+
+#pagina de inicio del sistema
 def home(request):	
-	#return render_to_response ('base.html',RequestContext(request))
+	
 	return render_to_response("base.html",RequestContext(request))
 def home1(request):	
-	#return render_to_response ('base.html',RequestContext(request))
+	
 	return render_to_response("base1.html",RequestContext(request))
 
-
-# def registro_usuarios(request):
-#   if request.method=="POST":
-#   		formulario=UserCreationForm(request.POST)
-#		if(formulario.is_valid()):
-#			formulario.save()
-#			return HttpResponseRedirect("//")
-#	
-##	formulario=UserCreationForm()
-#	return render_to_response("usuario/registro.html",{'formulario':formulario},context_instance=RequestContext(request))
 
 
 
@@ -46,10 +38,7 @@ def registrou(request):
 		formulario=fusuario()
 
 	return render_to_response('usuario/reg.html',{'formulario':formulario},RequestContext(request))
-	#datos=usuario.objects.all()	
-	#return render_to_response ('base.html',RequestContext(request))
-	#return render_to_response("usuario/reg.html",{'datos',datos},context_instance=RequestContext(request))
-
+	
 
 def inicio_view(request):
 	usuarios=User.objects.all()
@@ -59,6 +48,10 @@ def inicio_view(request):
 
 
 def logout_view(request):
+	p=SessionStore(session_key=request.session["idkey"])
+	p["estado"]="desconectado"
+	p["name"]=""
+	p.save()
 	logout(request)
 	return HttpResponseRedirect("/")
 
@@ -78,17 +71,20 @@ def ingresar(request):
 				datos={'formulario':formulario,'formulario2':formulario2}
 				return render_to_response("usuario/ingresar.html",datos,context_instance=RequestContext(request))
 		if formulario.is_valid:
-			#usuario=request.POST['username']
-			#clave=request.POST['password']
+			
 			Nick=request.POST["username"]
 			password=request.POST["password"]
-			#acceso=authenticate(username=usuario,password=clave)
+			
 			acceso=authenticate(username=Nick,password=password)
 			if acceso is not None:
 				if acceso.is_active:
 					login(request,acceso)
-					#request.session["name"]=Nick
-					#request.session["name"]=usuario
+					p=SessionStore()
+					p["name"]=Nick
+					p["estado"]="conectado"
+					p.save()
+					request.session["idkey"]=p.session_key
+					request.session["name"]=Nick
 					del request.session['cont']
 					return HttpResponseRedirect('/perfil')
 				else: 
@@ -111,39 +107,8 @@ def ingresar(request):
 		formulario=AuthenticationForm()
 	return render_to_response('usuario/ingresar.html',{'formulario':formulario},context_instance=RequestContext(request))
 
-#pagina de inicio del sistema
 
-"""
 
-def login_view(request):
-	if request.method=="POST":
-		formulario=AuthenticationForm(request.POST)
-		if formulario.is_valid:
-			usuario=request.POST['username']
-			contrasena=request.POST['password']
-			acceso=authenticate(username=usuario,password=contrasena)
-			if acceso is not None:
-				if acceso.is_active:
-					login(request, acceso)
-					del request.session['cont']
-					return HttpResponseRedirect("/user/perfil/")
-				else:
-					login(request, acceso)
-					return HttpResponseRedirect("/user/active/")
-			else:
-				request.session['cont']=request.session['cont']+1
-				aux=request.session['cont']
-				if aux>3:
-					return HttpResponse("Muchos intentos usted esta bloqueado")
-				estado=True
-				mensaje="Error en los datos "+str(aux)
-				datos={'formulario':formulario,'estado':estado,'mensaje':mensaje}
-				return render_to_response("usuario/login.html",datos,context_instance=RequestContext(request))		
-	else:
-		request.session['cont']=0
-		formulario=AuthenticationForm()
-	return render_to_response("usuario/login.html",{'formulario':formulario},context_instance=RequestContext(request))
-"""
 
 def user_active_view(request):
 	if request.user.is_authenticated():
@@ -186,7 +151,7 @@ def modificar_view(request):
 	return render_to_response("usuario/editar_perfil.html",{'formulario':formulario,'formulario2':formulario2},context_instance=RequestContext(request))
 
 
-def modificar_pass(request):
+def modificar_password(request):
 	user=User.objects.get(username=request.user)
 	perfil=Perfil.objects.get(user=user)
 	if request.method=="POST":
@@ -203,7 +168,9 @@ def modificar_pass(request):
 		formulario2=feditar_pass(initial={'contrasena':user.set_password})
 	return render_to_response("usuario/editar_perfil.html",{'formulario2':formulario2},context_instance=RequestContext(request))
 
-
+def ver_perfil(request,id):
+	usuario=User.objects.get(id=int(id))
+	return render_to_response("usuario/lista.html",{'usuario':usuario,'estado':True},RequestContext(request))
 def registro_tema(request):
 	temas=Tema.objects.all()
 	titulo="Registro de tema"
@@ -277,7 +244,9 @@ def eliminar_pregunta(request,id):
 	pregunta.delete()
 	respuesta.delete()
 	return HttpResponseRedirect("/tema/edit/"+str(id)+"/")
-
+def chat(request):
+	idsession=request.session["idkey"]
+	return HttpResponseRedirect("http://localhost:3000/django/"+idsession)
 
 
 def agregar(request):	
