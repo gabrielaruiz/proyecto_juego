@@ -10,9 +10,10 @@
 		<article id="rigth">
 				     <div class="contenedor">
 				     <h2>Bienvenido(a)!!! : {{ usuario.username }}</h2>
-				     <h2>Pais : {{ usuario.perfil.pais }}</h3>
 		             <h2>Email :{{ usuario.email }}</h3>
-		              <img src="{{usuario.perfil.avatar.url_200x200}}" alt="avatar">
+		             <img src="{{usuario.perfil.avatar.url_200x200}}" alt="avatar">
+		             <h2>PARTIDAS JUGADAS: {{usuario.perfil.partidas_jugadas}}</h2><br>
+					 <h2>PUNTOS ACUMULADOS: {{usuario.perfil.puntaje_total}}</h2><br>
 		             </div>
 		             <div>
 		             <h3><a href="/lista/">Volver atras</a></h3>
