@@ -151,16 +151,16 @@ def modificar_password(request):
 	user=User.objects.get(username=request.user)
 	perfil=Perfil.objects.get(user=user)
 	if request.method=="POST":
-		#formulario=fperfil(request.POST,request.FILES,instance=perfil)
+		
 		formulario2=feditar_pass(request.POST)
 		if  formulario2.is_valid():
 			contrasena=request.POST['password']
 			user.set_password(contrasena)
 			user.save()
-			#formulario.save()
+			
 		return HttpResponseRedirect("/ingresar/")
 	else:
-		#formulario=fperfil(instance=perfil)
+		
 		formulario2=feditar_pass(initial={'contrasena':user.set_password})
 	return render_to_response("usuario/editar_perfil.html",{'formulario2':formulario2},context_instance=RequestContext(request))
 
@@ -168,6 +168,7 @@ def ver_perfil(request,id):
 	usuario=User.objects.get(id=int(id))
 	return render_to_response("usuario/lista.html",{'usuario':usuario,'estado':True},RequestContext(request))
 def registro_tema(request):
+	menu=permisos(request)
 	usuario=request.user
 	if(not usuario.has_perm("proyecto_juego.add_tema")):
 		return HttpResponseRedirect("/error/permit");
@@ -187,6 +188,7 @@ def registro_tema(request):
 
 
 def add_pregunta(request,id):
+	menu=permisos(request)
 	usuario=request.user
 	if(not usuario.has_perm("inicio.add_pregunta")):
 		return HttpResponseRedirect("/error/permit");
@@ -215,6 +217,7 @@ def add_pregunta(request,id):
 	return render_to_response("usuario/registro_preguntas.html",datos,context_instance=RequestContext(request))
 
 def ver_preguntas(request,id):
+	menu=permisos(request)
 	usuario=request.user
 	if(not usuario.has_perm("inicio.change_pregunta")):
 		return HttpResponseRedirect("/error/permit");
@@ -225,6 +228,7 @@ def ver_preguntas(request,id):
 	return render_to_response("usuario/ver_preguntas.html",datos,context_instance=RequestContext(request))
 
 def edit_pregunta(request,id):
+	menu=permisos(request)
 	pregunta=Pregunta.objects.get(id=int(id))
 	respuesta=Respuesta.objects.get(pregunta=pregunta)
 	titulo="Editar pregunta"
@@ -245,6 +249,7 @@ def edit_pregunta(request,id):
 	return render_to_response("usuario/registro_preguntas.html",datos,context_instance=RequestContext(request))
 
 def eliminar_pregunta(request,id):
+	menu=permisos(request)
 	pregunta=Pregunta.objects.get(id=int(id))
 	id=pregunta.tema.id
 	respuesta=Respuesta.objects.get(pregunta=pregunta)
@@ -255,3 +260,15 @@ def chat(request):
 	idsession=request.session["idkey"]
 	return HttpResponseRedirect("http://localhost:3000/django/"+idsession)
 
+def permisos(request):
+	listadepermisos=[]
+	usuario=request.user
+	if usuario.has_perm("comienso.add_tema"):
+		listadepermisos.append({"url":"/tema/","label":"registrar temas "})
+	if usuario.has_perm("comienso.add_pregunta"):
+		listadepermisos.append({"url":"/tema/add/","label":"agregar pregun"})
+	if usuario.has_perm("comienso.change_pregunta"):
+		listadepermisos.append({"url":"/tema/edit/","label":"edit preguntas"})
+	if usuario.has_perm("comienso.delete_pregunta"):
+		listadepermisos.append({"url":"/tema/edit/","label":"eliminar pregunta"})
+	return listadepermisos

@@ -1,0 +1,8 @@
+h1 Lista de Partidas
+	ul
+		- each partida in partidas
+			li Titulo : #{partida.titulo}
+			li Preguntas :#{partida.pregunta}
+			li Tiempo :#{partida.tiempo}
+			
+			a(href="/salaespera/") entrar

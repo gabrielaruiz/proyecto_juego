@@ -1,0 +1,62 @@
+extends layout
+block content
+	form(class="form", method="post" action="/nuevapartida/")
+		div#body(class="form-group")
+			label(class="control-label") Titulo
+			input(type="text" name="titulo" required="required" ) 
+		div#body(class="form-group")
+			label(class="control-label") Tipo de partida
+			div#body(class="radio")
+				input(type="radio" name="tipo" value=1) 
+				label(class="control-label") Publico
+			div#body(class="radio")
+				input(type="radio" name="tipo" value=0)
+				label(class="control-label") Privado 
+		div(class="form-group")
+			label(class="control-label") Preguntas
+			select#body(name="pregunta")
+				label() "Seleccione Numero de Preguntas"
+				option() 10
+				option() 20
+				option() 30
+				option() 40
+				option() 50
+		div(class="form-group")
+			label(class="control-label") Tiempo de respuesta 
+			select#body(name="tiempo")
+				label() "Seleccione Tiempo" 
+				option() 10
+				option() 15
+				option() 15
+				option() 20
+				option() 25
+				option() 30
+				option() 35
+				option() 40
+				option() 45
+				option() 50
+				option() 55
+				option() 60
+		div(class="form-group")
+			label(class="control-label") Categorias
+			div#body(class="checkbox")
+				input(type="checkbox" name="arte" value=1 )
+				label(class="control-label") Arte  
+			div#body(class="checkbox")
+				input(type="checkbox" name="lenguaje" value=2)
+				label(class="control-label") lenguaje
+			div#body(class="checkbox")
+				input(type="checkbox" name="matematicas" value=3) 
+				label(class="control-label") Matematicas
+			div#body(class="checkbox")
+				input(type="checkbox" name="peliculas" value=4)
+				label(class="control-label") Peliculas 
+			div#body(class="checkbox")
+				input(type="checkbox" name="tecnologia" value=5)
+				label(class="control-label") Tecnologia 
+			div#body(class="checkbox")
+				input(type="checkbox" name="musica" value=6) 
+				label(class="control-label") Musica
+		div(class="control-group")
+			button(type="submit") Crear Partida
+			button(type="submit") Cancelar

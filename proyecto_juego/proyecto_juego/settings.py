@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'proyecto_juego.apps.inicio',
+    'social.apps.django_app.default',
     'captcha',
 
 )
@@ -112,4 +113,13 @@ MEDIA_ROOT=os.path.join(RUTA_PROYECTO,"media")
 RECAPTCHA_PUBLIC_KEY = '6LffQf4SAAAAAMAveMCj81gJ0i6FF9coJPXvVNbO'
 RECAPTCHA_PRIVATE_KEY = '6LffQf4SAAAAAMxcqmHhUS8vpD5GboBMl1Jp70F2'
 
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookAppOAuth2',
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '576440422455418'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd894ef356e57a2ba5d5fe0092f1f48ee'
